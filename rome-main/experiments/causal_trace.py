@@ -47,6 +47,7 @@ def main():
             "gpt2-large",
             "gpt2-medium",
             "gpt2",
+            "tum-nlp/gpt-2-medium-target-aware-counterspeech-generation"
         ],
     )
     aa("--fact_file", default=None)
