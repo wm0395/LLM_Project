@@ -101,6 +101,7 @@ def main():
 
     # order csv by huggingface order, the order used to save activations
     dataset = load_dataset('csv', data_files='conan_merged.csv')
+    dataset = dataset['train']
     golden_q_order = list(dataset["hateSpeech"])
     df = df.sort_values(by='hateSpeech', key=lambda x: x.map({k: i for i, k in enumerate(golden_q_order)}))
     print(f"length of separating df is {len(df)}")
