@@ -784,13 +784,13 @@ def get_separated_activations(labels, head_wise_activations):
     for i in range(len(dataset)):
         corr = dataset[i]['counterSpeech_x']
         incorr = dataset[i]['counterSpeech_y']
-        labels = [1] + [0] * len(incorr)
-        actual_labels.append(labels)
+        labs = [1] + [0] * len(incorr)
+        actual_labels.append(labs)
         #actual_labels.append(dataset[i]['counterSpeech'])
 
     idxs_to_split_at = np.cumsum([len(x) for x in actual_labels])        
 
-    labels = list(actual_labels)
+    labels = list(labels)
     print(f"length of list of activations is {len(labels)}")
     separated_labels = []
     for i in range(len(idxs_to_split_at)):
