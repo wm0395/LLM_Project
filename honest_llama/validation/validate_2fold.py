@@ -14,7 +14,7 @@ from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, AutoCon
 
 import sys
 sys.path.append('../')
-import llama
+#import llama
 
 # Specific pyvene imports
 from utils import alt_tqa_evaluate, flattened_idx_to_layer_head, layer_head_to_flattened_idx, get_interventions_dict, get_top_heads, get_separated_activations, get_com_directions
@@ -61,7 +61,7 @@ def main():
     parser.add_argument('--activations_dataset', type=str, default='tqa_gen_end_q', help='feature bank for calculating std along direction')
     parser.add_argument('--num_heads', type=int, default=48, help='K, number of top heads to intervene on')
     parser.add_argument('--alpha', type=float, default=15, help='alpha, intervention strength')
-    parser.add_argument("--num_fold", type=int, default=2, help="number of folds")
+    parser.add_argument("--num_fold", type=int, default=4, help="number of folds")
     parser.add_argument('--val_ratio', type=float, help='ratio of validation set size to development set size', default=0.2)
     parser.add_argument('--use_center_of_mass', action='store_true', help='use center of mass direction', default=False)
     parser.add_argument('--use_random_dir', action='store_true', help='use random direction', default=False)
@@ -103,6 +103,7 @@ def main():
     dataset = load_dataset('csv', data_files='conan_merged.csv')
     golden_q_order = list(dataset["hateSpeech"])
     df = df.sort_values(by='hateSpeech', key=lambda x: x.map({k: i for i, k in enumerate(golden_q_order)}))
+    print(f"length of separating df is {len(df)}")
     assert list(dataset['hateSpeech']) == list(df["hateSpeech"])
     
     # get two folds using numpy

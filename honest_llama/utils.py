@@ -169,14 +169,13 @@ def tokenized_conan(dataset, tokenizer):
     for i in range(len(dataset)): 
         question = dataset['train'][i]['hateSpeech']
         category = dataset['train'][i]['target']
-
-        for j in range(len(dataset['train'][i]['counterSpeech_x'])): 
-            answer = dataset['train'][i]['counterSpeech_y'][j]
-            prompt = format_conan(question, answer)
-            prompt = tokenizer(prompt, return_tensors = 'pt').input_ids
-            all_prompts.append(prompt)
-            all_labels.append(1)
-            all_categories.append(category)
+ 
+        answer = dataset['train'][i]['counterSpeech_x']
+        prompt = format_conan(question, answer)
+        prompt = tokenizer(prompt, return_tensors = 'pt').input_ids
+        all_prompts.append(prompt)
+        all_labels.append(1)
+        all_categories.append(category)
         
         for j in range(len(dataset['train'][i]['counterSpeech_y'])):
             answer = dataset['train'][i]['counterSpeech_y'][j]
@@ -780,6 +779,37 @@ def get_separated_activations(labels, head_wise_activations):
     # separate activations by question
     #dataset=load_dataset('truthful_qa', 'multiple_choice')['validation']
     dataset = load_dataset('csv', data_files='conan_merged.csv')
+    dataset = dataset['train']
+    actual_labels = []
+    for i in range(len(dataset)):
+        corr = dataset[i]['counterSpeech_x']
+        incorr = dataset[i]['counterSpeech_y']
+        labels = [1] + [0] * len(incorr)
+        actual_labels.append(labels)
+        #actual_labels.append(dataset[i]['counterSpeech'])
+
+    idxs_to_split_at = np.cumsum([len(x) for x in actual_labels])        
+
+    labels = list(actual_labels)
+    print(f"length of list of activations is {len(labels)}")
+    separated_labels = []
+    for i in range(len(idxs_to_split_at)):
+        if i == 0:
+            separated_labels.append(labels[:idxs_to_split_at[i]])
+        else:
+            separated_labels.append(labels[idxs_to_split_at[i-1]:idxs_to_split_at[i]])
+    assert separated_labels == actual_labels
+
+    separated_head_wise_activations = np.split(head_wise_activations, idxs_to_split_at)
+
+    return separated_head_wise_activations, separated_labels, idxs_to_split_at
+
+def get_separated_activations_old(labels, head_wise_activations): 
+
+    # separate activations by question
+    #dataset=load_dataset('truthful_qa', 'multiple_choice')['validation']
+    dataset = load_dataset('csv', data_files='conan_merged.csv')
+    dataset = dataset['train']
     actual_labels = []
     for i in range(len(dataset)):
         actual_labels.append(dataset[i]['mc2_targets']['labels'])
