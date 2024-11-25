@@ -218,18 +218,18 @@ def tokenized_conan(dataset, tokenizer):
     all_labels = []
     all_categories = []
     for i in range(len(dataset)): 
-        question = dataset['train'][i]['hateSpeech']
-        category = dataset['train'][i]['target']
+        question = dataset[i]['hateSpeech']
+        category = dataset[i]['target']
  
-        answer = dataset['train'][i]['counterSpeech_x']
+        answer = dataset[i]['counterSpeech_x']
         prompt = format_conan(question, answer)
         prompt = tokenizer(prompt, return_tensors = 'pt').input_ids
         all_prompts.append(prompt)
         all_labels.append(1)
         all_categories.append(category)
         
-        for j in range(len(dataset['train'][i]['counterSpeech_y'])):
-            answer = dataset['train'][i]['counterSpeech_y'][j]
+        for j in range(len(dataset[i]['counterSpeech_y'])):
+            answer = dataset[i]['counterSpeech_y'][j]
             prompt = format_conan(question, answer)
             prompt = tokenizer(prompt, return_tensors = 'pt').input_ids
             all_prompts.append(prompt)
@@ -831,7 +831,7 @@ def get_separated_activations(labels, head_wise_activations):
     # separate activations by question
     #dataset=load_dataset('truthful_qa', 'multiple_choice')['validation']
     dataset = load_dataset('csv', data_files='conan_merged.csv')
-    dataset = dataset['train']
+    dataset = load_and_update1(dataset)
     actual_labels = []
     for i in range(len(dataset)):
         corr = dataset[i]['counterSpeech_x']
