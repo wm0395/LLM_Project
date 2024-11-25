@@ -1,3 +1,15 @@
+## Honest LLama (ITI)
+Init
+To start with the model, 
+
+**1. Get Activations**
+*!python get_activations.py --model_name vicuna_7B --dataset_name conan*
+
+**2. Change Directory to validation**
+
+**3. Run the following command**
+*!python validate_2fold.py --model_name vicuna_7B --dataset_name conan --num_heads 48 --alpha 15 --device 1 --use_center_of_mass --activations_dataset conan*
+=======
 # Counter-Speech Generation with Causal Tracing and Factuality Analysis
 
 This repository focuses on generating counter-speech using the CONAN dataset and analyzing its factuality. The work incorporates **ROME** (Robust Optimization of Memory Editing) and **Honest-LLAMA** to enhance factuality and perform causal tracing to understand model behavior. The tools and scripts provided facilitate fine-tuning GPT2-Medium models, testing factuality, and creating counter-speech datasets.
@@ -107,3 +119,4 @@ For further questions or support, please contact the repository maintainers.
 4. **Polished Text**: Improved grammar, clarity, and consistency.
 5. **Encouragement for Contributions**: Added guidelines for collaboration.
 6. **Call to Action**: Contact details for maintainers.
+
