@@ -25,6 +25,7 @@ from functools import partial
 
 #from truthfulqa import utilities, models, metrics
 import openai
+import ast
 #from truthfulqa.configs import BEST_COL, ANSWER_COL, INCORRECT_COL
 
 ENGINE_MAP = {
