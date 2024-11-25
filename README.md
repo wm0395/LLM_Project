@@ -1,50 +1,38 @@
-## Honest LLama (ITI)
-Init
-To start with the model, 
+# Counter-Speech Generation with Causal Tracing and Factuality Analysis  
 
-**1. Get Activations**
-*!python get_activations.py --model_name vicuna_7B --dataset_name conan*
-
-**2. Change Directory to validation**
-
-**3. Run the following command**
-*!python validate_2fold.py --model_name vicuna_7B --dataset_name conan --num_heads 48 --alpha 15 --device 1 --use_center_of_mass --activations_dataset conan*
-=======
-# Counter-Speech Generation with Causal Tracing and Factuality Analysis
-
-This repository focuses on generating counter-speech using the CONAN dataset and analyzing its factuality. The work incorporates **ROME** (Robust Optimization of Memory Editing) and **Honest-LLAMA** to enhance factuality and perform causal tracing to understand model behavior. The tools and scripts provided facilitate fine-tuning GPT2-Medium models, testing factuality, and creating counter-speech datasets.
+This repository focuses on generating counter-speech using the CONAN dataset and analyzing its factuality. The work incorporates **ROME** (Robust Optimization of Memory Editing) and **Honest-LLAMA** to enhance factuality and perform causal tracing to understand model behavior. The tools and scripts provided facilitate fine-tuning GPT2-Medium models, testing factuality, and creating counter-speech datasets.  
 
 ---
 
-## Table of Contents
+## Table of Contents  
 
-1. [Overview](#overview)
-2. [Features](#features)
-3. [Usage](#usage)
-   - [Fine-Tuning GPT2-Medium](#fine-tuning-gpt2-medium)
-   - [Evaluating Factuality](#evaluating-factuality)
-   - [Causal Tracing and Dataset Creation](#causal-tracing-and-dataset-creation)
-4. [Requirements](#requirements)
-5. [Key Components](#key-components)
-6. [Contributions](#contributions)
-7. [License](#license)
-
----
-
-## Overview
-
-The repository provides tools and resources to:
-- Generate counter-speech using **GPT2-Medium**.
-- Evaluate the factuality of generated outputs.
-- Apply causal tracing to identify paths leading to factual inaccuracies.
-- Use intervention techniques to improve reliability in counter-speech generation.
-
-This repository builds upon the methodologies outlined in:
-- [Locating and Editing Factual Associations in GPT](https://proceedings.neurips.cc/paper_files/paper/2022/file/6f1d43d5a82a37e89b0665b33bf3a182-Paper-Conference.pdf)
-- [Inference-Time Intervention: Eliciting Truthful Answers from a Language Model](https://proceedings.neurips.cc/paper_files/paper/2023/file/81b8390039b7302c909cb769f8b6cd93-Paper-Conference.pdf)
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Usage](#usage)  
+   - [Fine-Tuning GPT2-Medium](#fine-tuning-gpt2-medium)  
+   - [Evaluating Factuality](#evaluating-factuality)  
+   - [Causal Tracing and Dataset Creation](#causal-tracing-and-dataset-creation)  
+4. [Requirements](#requirements)  
+5. [Key Components](#key-components)  
+6. [Honest-LLAMA (ITI)](#honest-llama-iti)  
+7. [Contributions](#contributions)  
+8. [License](#license)  
 
 ---
 
+## Overview  
+
+The repository provides tools and resources to:  
+- Generate counter-speech using **GPT2-Medium**.  
+- Evaluate the factuality of generated outputs.  
+- Apply causal tracing to identify paths leading to factual inaccuracies.  
+- Use intervention techniques to improve reliability in counter-speech generation.  
+
+This repository builds upon the methodologies outlined in:  
+- [Locating and Editing Factual Associations in GPT](https://proceedings.neurips.cc/paper_files/paper/2022/file/6f1d43d5a82a37e89b0665b33bf3a182-Paper-Conference.pdf)  
+- [Inference-Time Intervention: Eliciting Truthful Answers from a Language Model](https://proceedings.neurips.cc/paper_files/paper/2023/file/81b8390039b7302c909cb769f8b6cd93-Paper-Conference.pdf)  
+
+---
 ## Features
 
 1. **Fine-Tuning**: Fine-tune GPT2-Medium on the **CONAN** dataset or similar datasets for counter-speech generation.
@@ -97,6 +85,24 @@ Perform causal tracing to analyze factual inaccuracies and refine outputs.
 CONAN Dataset: A widely-used dataset for counter-speech generation experiments.
 ROME Framework: Tools for memory editing and tracing factual inaccuracies in language models.
 Honest-LLAMA: A factuality-enhanced language model for generating reliable outputs.
+
+---
+
+### Honest-LLAMA (ITI)
+Initialization
+- Get Activations:
+Run the following command to extract model activations:
+
+   ```bash
+   python get_activations.py --model_name vicuna_7B --dataset_name conan
+- Change Directory to Validation:
+Navigate to the validation directory in your terminal.
+
+- Validate Model with ITI:
+Use the following command to perform inference-time interventions:
+
+   ```bash
+   python validate_2fold.py --model_name vicuna_7B --dataset_name conan --num_heads 48 --alpha 15 --device 1 --use_center_of_mass --activations_dataset conan
 
 ---
 
