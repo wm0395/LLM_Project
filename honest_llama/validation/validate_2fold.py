@@ -11,13 +11,14 @@ import numpy as np
 import argparse
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, AutoConfig
+import csv
 
 import sys
 sys.path.append('../')
 #import llama
 
 # Specific pyvene imports
-from utils import alt_tqa_evaluate, flattened_idx_to_layer_head, layer_head_to_flattened_idx, get_interventions_dict, get_top_heads, get_separated_activations, get_com_directions
+from utils import alt_tqa_evaluate, flattened_idx_to_layer_head, layer_head_to_flattened_idx, get_interventions_dict, get_top_heads, get_separated_activations, get_com_directions, load_and_update2, tqa_run_answers
 from interveners import wrapper, Collector, ITI_Intervener
 import pyvene as pv
 
@@ -100,8 +101,8 @@ def main():
     """
 
     # order csv by huggingface order, the order used to save activations
-    dataset = load_dataset('csv', data_files='conan_merged.csv')
-    dataset = dataset['train']
+    dataset = load_and_update2('csv', data_files='conan_merged.csv')
+    #dataset = dataset['train']
     golden_q_order = list(dataset["hateSpeech"])
     df = df.sort_values(by='hateSpeech', key=lambda x: x.map({k: i for i, k in enumerate(golden_q_order)}))
     print(f"length of separating df is {len(df)}")
@@ -213,7 +214,13 @@ def main():
             orig_model=model
         )
         """
-
+        mdl = 'vicuna_7B'
+        questions = dataset['hateSpeech']
+        many_shot_prefix = "Hate Speech: The vast majority of Muslims are unemployed and refuse to work. \n Counter Speech: David Pedulla, a sociologist at the University of Texas at Austin, sent out thousands of fake resumes to test how gender and work history affected callbacks by potential employers looking to interview the simulated job candidates. They found that the consequences of unemployment differ in important ways by the race and gender of the job applicant with significant discriminatory behaviour by potential employers. So, is really the vast majority of Muslims refusing to work or are they just being discriminated? \n \n Hate Speech: Some races have lower physical and cognitive abilities, the sooner we accept this, the better it will be for humanity. \n Counter Speech: The bankrupt concept of fixed and immutable human 'races' — packages of physical and behavioral traits — ranked by color has led to the creation of potent and persistent racial stereotypes handed down to our days."
+        llama_tokenizer = AutoTokenizer.from_pretrained(HF_NAMES[mdl])
+        questions = tqa_run_answers(questions, HF_NAMES[mdl], mdl, model=mdl, tokenizer=llama_tokenizer,
+                                device="cuda", cache_dir=None, interventions={}, intervention_fn=None, instruction_prompt=args.instruction_prompt, many_shot_prefix=many_shot_prefix)
+        questions.to_csv(f"{filename}.csv")
         print(f"FOLD {i}")
         #print(curr_fold_results)
 

@@ -14,7 +14,7 @@ import argparse
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
 
 # Specific pyvene imports
-from utils import get_llama_activations_pyvene, tokenized_tqa, tokenized_tqa_gen, tokenized_tqa_gen_end_q, tokenized_conan
+from utils import get_llama_activations_pyvene, tokenized_tqa, tokenized_tqa_gen, tokenized_tqa_gen_end_q, tokenized_conan, load_and_update1
 from interveners import wrapper, Collector, ITI_Intervener
 import pyvene as pv
 
@@ -64,7 +64,7 @@ def main():
         dataset = load_dataset("truthfulqa/truthful_qa", 'generation')['validation']
         formatter = tokenized_tqa_gen_end_q
     elif args.dataset_name == 'conan':
-        dataset = load_dataset('csv', data_files='conan_merged.csv')
+        dataset = load_and_update1('conan_merged')
         formatter = tokenized_conan
     else: 
         raise ValueError("Invalid dataset name")
