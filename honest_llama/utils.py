@@ -191,7 +191,7 @@ def transform_dataset(example):
     })
     
     # Add each item in counterSpeech_y with label 0
-    for counterspeech in eval(example["counterSpeech_y"]):  # Ensure counterSpeech_y is a list
+    for counterspeech in (example["counterSpeech_y"]):  # Ensure counterSpeech_y is a list
         transformed_examples.append({
             "hateSpeech": example["hateSpeech"],
             "counterSpeech": counterspeech,
